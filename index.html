@@ -44,7 +44,8 @@
                             </li>
                         </ul>
                         <div class="nav_btns">
-                            <a href="https://go.mypartner.io/business-financing/?ref=001Qk00000gFYkPIAW" target="_blank">
+                            <a href="https://go.mypartner.io/business-financing/?ref=001Qk00000gFYkPIAW"
+                                target="_blank">
                                 <button type="button">Apply Now</button>
                             </a>
                         </div>
@@ -73,7 +74,8 @@
                         Qualify in 60 seconds. No obligation. No credit pull until you choose an offer.
                     </p>
                     <div class="hero_cta" data-aos="fade-up" data-aos-delay="450">
-                        <a href="https://go.mypartner.io/business-financing/?ref=001Qk00000gFYkPIAW&lang=es" target="_blank">
+                        <a href="https://go.mypartner.io/business-financing/?ref=001Qk00000gFYkPIAW&lang=es"
+                            target="_blank">
                             <button class="btn_primary_hero">Apply Now</button>
                         </a>
                     </div>
@@ -620,6 +622,7 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="assets/js/script.js"></script>
     <script>
@@ -636,6 +639,98 @@
                     el.setAttribute('data-aos', 'fade-up');
                 });
         }
+    </script>
+
+    <script>
+        // 1. Initialize EmailJS (Using your Public Key)
+        emailjs.init("3GDXsKrhnyFOIcN-W");
+
+        // 2. Grab all the elements
+        const fullName = document.getElementById('fullName');
+        const businessEmail = document.getElementById('businessEmail');
+        const businessType = document.getElementById('businessType');
+        const monthlyRevenue = document.getElementById('monthlyRevenue');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.querySelector('.btn_text');
+        const btnLoader = document.querySelector('.btn_loader');
+
+        // Initial state: disable the submit button
+        submitBtn.disabled = true;
+
+        // 3. Validation Function
+        function validateForm() {
+            // Basic email regex for format validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const isValidEmail = emailRegex.test(businessEmail.value);
+
+            // Check if all fields have values and email is valid
+            const isFilled = fullName.value.trim() !== '' &&
+                isValidEmail &&
+                businessType.value !== '' &&
+                monthlyRevenue.value.trim() !== '';
+
+            // Enable or disable button based on validation
+            submitBtn.disabled = !isFilled;
+        }
+
+        // 4. Listen for inputs to trigger validation in real-time
+        [fullName, businessEmail, businessType, monthlyRevenue].forEach(input => {
+            input.addEventListener('input', validateForm);
+            input.addEventListener('change', validateForm); // specifically for the select dropdown
+        });
+
+        // 5. Handle Form Submission
+        submitBtn.addEventListener('click', function (e) {
+            e.preventDefault(); // Prevents default browser behavior 
+
+            // UI Animation: Hide text, show loader, prevent double-clicks
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'inline-block';
+            submitBtn.disabled = true;
+
+            // Create the parameter object for your EmailJS template
+            // Notice the capital 'B' in Business_type to match your template!
+            const templateParams = {
+                from_name: fullName.value,
+                reply_to: businessEmail.value,
+                Business_type: businessType.value,
+                monthly_revenue: monthlyRevenue.value
+            };
+
+            // Send via EmailJS (Using your Service ID and Template ID)
+            emailjs.send('service_oa5pdql', 'template_j5efi3r', templateParams)
+                .then(function (response) {
+                    console.log('SUCCESS!', response.status, response.text);
+
+                    // UI Update: Success message
+                    btnText.style.display = 'inline-block';
+                    btnText.textContent = 'Success! Sent.';
+                    btnLoader.style.display = 'none';
+
+                    // Clear the form fields
+                    fullName.value = '';
+                    businessEmail.value = '';
+                    businessType.value = '';
+                    monthlyRevenue.value = '';
+
+                    // Re-run validation to lock the button again
+                    validateForm();
+
+                    // Revert button text back to normal after 3 seconds
+                    setTimeout(() => {
+                        btnText.textContent = 'Get My Savings Estimate';
+                    }, 3000);
+
+                }, function (error) {
+                    console.log('FAILED...', error);
+
+                    // UI Update: Error state
+                    alert('Oops! Something went wrong. Please try again.');
+                    btnText.style.display = 'inline-block';
+                    btnLoader.style.display = 'none';
+                    submitBtn.disabled = false; // Re-enable so they can try again
+                });
+        });
     </script>
 </body>
 

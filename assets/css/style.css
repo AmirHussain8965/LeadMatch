@@ -193,7 +193,25 @@ img {
     background: var(--color_green);
     transform: translateY(-3px);
 }
+/* Styling for when the button is disabled */
+.btn_submit:disabled {
+    cursor: not-allowed;
+    background-color: transparent;
+    color: rgba(0, 0, 0, 0.5);
+    border-color: rgba(0, 0, 0, 0.5);
+}
 
+/* Animation for the loader */
+.spin {
+    display: inline-block;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
 /* ========================================
    HERO SECTION
 ======================================== */
@@ -779,17 +797,16 @@ img {
     display: block;
     font-size: 16px;
     font-weight: 600;
-    color: #999999;
+    color: var(--color_black);
     margin-bottom: 12px;
 }
 
 .form_input {
     width: 100%;
     background: #F5F5F5;
-    border: 1.5px solid transparent;
+    border: 1px solid transparent;
     border-radius: var(--radius_md);
     padding: 14px 18px;
-    font-family: "Inter", sans-serif;
     font-size: 14px;
     color: var(--color_black);
     outline: none;
@@ -798,13 +815,13 @@ img {
 }
 
 .form_input::placeholder {
-    color: #BBBBBB;
+    color: var(--color_black);
 }
 
 .form_input:focus {
     background: var(--color_white);
-    border-color: var(--color_purple);
-    box-shadow: 0 0 0 3px rgba(124, 111, 205, 0.12);
+    border-color: var(--color_black);
+    box-shadow: none !important;
 }
 
 .select_wrapper {
@@ -845,8 +862,6 @@ img {
 }
 
 .btn_submit:hover {
-    background: transparent;
-    color: var(--color_black);
     transform: translateY(-2px);
     box-shadow: var(--shadow_hover);
 }
