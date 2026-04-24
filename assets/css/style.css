@@ -108,7 +108,9 @@ img {
     position: relative;
     padding: 3px 0 6px 0;
 }
-
+.header_section .navbar .nav-link.active{
+    color: #000000 !important;
+}
 .header_section .navbar .nav-link::after {
     content: "";
     position: absolute;
@@ -1078,6 +1080,8 @@ img {
     z-index: 2;
     padding: 60px 50px;
     max-width: 540px;
+    background: linear-gradient(0deg, rgba(136, 119, 189, 0.24), rgba(136, 119, 189, 0.24)),
+linear-gradient(90.35deg, #8877BD -26.66%, rgba(136, 119, 189, 0) 99.7%);
 }
 
 .ready_globe_icon {
@@ -1135,7 +1139,7 @@ img {
 
 .ready_btn_ghost {
     background: transparent;
-    color: var(--color_white);
+    color: var(--color_white) !important;
     font-size: 15px;
     font-weight: 600;
     padding: 13px 26px;
