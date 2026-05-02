@@ -815,7 +815,7 @@ img {
 }
 
 .form_input::placeholder {
-    color: var(--color_black);
+    color: #666666;
 }
 
 .form_input:focus {

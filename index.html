@@ -74,8 +74,7 @@
                         Qualify in 60 seconds. No obligation. No credit pull until you choose an offer.
                     </p>
                     <div class="hero_cta" data-aos="fade-up" data-aos-delay="450">
-                        <a href="https://go.mypartner.io/business-financing/?ref=001Qk00000gFYkPIAW"
-                            target="_blank">
+                        <a href="https://go.mypartner.io/business-financing/?ref=001Qk00000gFYkPIAW" target="_blank">
                             <button class="btn_primary_hero">Apply Now</button>
                         </a>
                     </div>
@@ -371,12 +370,12 @@
     <!-- ========== APPLY NOW SECTION ========== -->
     <section class="apply_section" id="ApplyNow">
         <div class="container">
-            <div class="row g-4 align-items-stretch">
+            <div class="row align-items-stretch">
                 <div class="col-12 col-lg-6" data-aos="fade-right">
                     <div class="apply_form_card">
-                        <h2 class="apply_title">Start saving on Merchant fees</h2>
-                        <p class="apply_subtitle">Enter your details to see how you can erase your fees or have them
-                            lowered dramatically.</p>
+                        <h3 class="form_title">Get Your Savings Estimate</h3>
+                        <p class="form_subtitle">No commitment. Just clarity on your fees.</p>
+
                         <div class="apply_form">
                             <div class="form_group">
                                 <label class="form_label">Full Name</label>
@@ -386,6 +385,10 @@
                                 <label class="form_label">Business Email</label>
                                 <input type="email" class="form_input" placeholder="Jane@company.com"
                                     id="businessEmail">
+                            </div>
+                            <div class="form_group">
+                                <label class="form_label">Phone Number</label>
+                                <input type="tel" class="form_input" placeholder="+1 234 567 8900" id="phoneNumber">
                             </div>
                             <div class="form_group">
                                 <label class="form_label">Business Type</label>
@@ -414,7 +417,6 @@
                                     <i class="bi bi-arrow-clockwise spin"></i>
                                 </span>
                             </button>
-                            <p class="form_disclaimer">No obligation &bull; No credit check &bull; Takes 60 seconds</p>
                         </div>
                     </div>
                 </div>
@@ -622,7 +624,7 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="assets/js/script.js"></script>
     <script>
@@ -642,12 +644,15 @@
     </script>
 
     <script>
-        // 1. Initialize EmailJS (Using your Public Key)
-        emailjs.init("3GDXsKrhnyFOIcN-W");
+        // 1. Initialize EmailJS with the new Public Key
+        emailjs.init({
+            publicKey: "1fBIugRURjQgub8W4",
+        });
 
-        // 2. Grab all the elements
+        // 2. Grab all the form elements
         const fullName = document.getElementById('fullName');
         const businessEmail = document.getElementById('businessEmail');
+        const phoneNumber = document.getElementById('phoneNumber');
         const businessType = document.getElementById('businessType');
         const monthlyRevenue = document.getElementById('monthlyRevenue');
         const submitBtn = document.getElementById('submitBtn');
@@ -666,6 +671,7 @@
             // Check if all fields have values and email is valid
             const isFilled = fullName.value.trim() !== '' &&
                 isValidEmail &&
+                phoneNumber.value.trim() !== '' &&
                 businessType.value !== '' &&
                 monthlyRevenue.value.trim() !== '';
 
@@ -673,32 +679,32 @@
             submitBtn.disabled = !isFilled;
         }
 
-        // 4. Listen for inputs to trigger validation in real-time
-        [fullName, businessEmail, businessType, monthlyRevenue].forEach(input => {
+        // 4. Listen for inputs to trigger validation in real time
+        [fullName, businessEmail, phoneNumber, businessType, monthlyRevenue].forEach(input => {
             input.addEventListener('input', validateForm);
-            input.addEventListener('change', validateForm); // specifically for the select dropdown
+            input.addEventListener('change', validateForm);
         });
 
         // 5. Handle Form Submission
         submitBtn.addEventListener('click', function (e) {
-            e.preventDefault(); // Prevents default browser behavior 
+            e.preventDefault();
 
-            // UI Animation: Hide text, show loader, prevent double-clicks
+            // UI Animation: Hide text, show loader, prevent double clicks
             btnText.style.display = 'none';
             btnLoader.style.display = 'inline-block';
             submitBtn.disabled = true;
 
-            // Create the parameter object for your EmailJS template
-            // Notice the capital 'B' in Business_type to match your template!
+            // Build the parameter object matching the EmailJS template variables
             const templateParams = {
                 from_name: fullName.value,
                 reply_to: businessEmail.value,
-                Business_type: businessType.value,
+                phone_number: phoneNumber.value,
+                business_type: businessType.value,
                 monthly_revenue: monthlyRevenue.value
             };
 
-            // Send via EmailJS (Using your Service ID and Template ID)
-            emailjs.send('service_oa5pdql', 'template_j5efi3r', templateParams)
+            // Send via EmailJS using the new Service ID and Template ID
+            emailjs.send('service_4gon7hw', 'template_7is00uf', templateParams)
                 .then(function (response) {
                     console.log('SUCCESS!', response.status, response.text);
 
@@ -710,28 +716,31 @@
                     // Clear the form fields
                     fullName.value = '';
                     businessEmail.value = '';
+                    phoneNumber.value = '';
                     businessType.value = '';
                     monthlyRevenue.value = '';
 
-                    // Re-run validation to lock the button again
-                    validateForm();
-
-                    // Revert button text back to normal after 3 seconds
+                    // Reset button text after 3 seconds
                     setTimeout(() => {
                         btnText.textContent = 'Get My Savings Estimate';
                     }, 3000);
-
                 }, function (error) {
                     console.log('FAILED...', error);
 
-                    // UI Update: Error state
-                    alert('Oops! Something went wrong. Please try again.');
+                    // UI Update: Error message
                     btnText.style.display = 'inline-block';
+                    btnText.textContent = 'Failed. Try again.';
                     btnLoader.style.display = 'none';
-                    submitBtn.disabled = false; // Re-enable so they can try again
+                    submitBtn.disabled = false;
+
+                    // Reset button text after 3 seconds
+                    setTimeout(() => {
+                        btnText.textContent = 'Get My Savings Estimate';
+                    }, 3000);
                 });
         });
     </script>
+
 </body>
 
 </html>
