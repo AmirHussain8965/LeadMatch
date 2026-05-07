@@ -772,7 +772,13 @@ img {
 .apply_form_card:hover {
     box-shadow: var(--shadow_hover);
 }
-
+.form_title{
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--color_black);
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+}
 .apply_title {
     font-size: 26px;
     font-weight: 800;
@@ -1311,6 +1317,11 @@ linear-gradient(90.35deg, #8877BD -26.66%, rgba(136, 119, 189, 0) 99.7%);
 /* ========================================
    RESPONSIVE BREAKPOINTS
 ======================================== */
+@media (max-width: 1366px){
+    .hero_title{
+        font-size: 42px;
+    }
+}
 @media (max-width: 992px) {
     .header_section{
         background: var(--color_white);
@@ -1406,6 +1417,9 @@ linear-gradient(90.35deg, #8877BD -26.66%, rgba(136, 119, 189, 0) 99.7%);
 }
 
 @media (max-width: 576px) {
+    .hero_title{
+        font-size: 28px;
+    }
     .hero_section {
         padding: 110px 0 50px;
     }
